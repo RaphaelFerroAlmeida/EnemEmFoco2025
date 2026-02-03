@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SESI Intelligence | Monitoramento ENEM</title>
+    <title>SESI GOIÁS | Resumo Enem em Foco 2025</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,10 +19,11 @@
             --bg-light: #f8fafc;
             --white: #ffffff;
             
-            --lvl1: #94a3b8;
-            --lvl2: #0ea5e9;
-            --lvl3: #4f46e5;
-            --lvlMax: #fbbf24;
+            /* Cores Vibrantes Atualizadas */
+            --lvl1: #2563eb; /* Azul Royal Vibrante - Nível I */
+            --lvl2: #9333ea; /* Roxo Vibrante - Nível II */
+            --lvl3: #db2777; /* Pink Vibrante - Nível III */
+            --lvlMax: #fbbf24; /* Dourado - Máxima */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,6 +33,11 @@
         /* UTILS */
         .hidden { display: none !important; }
         .btn { cursor: pointer; border: none; outline: none; transition: all 0.2s; font-family: 'Montserrat', sans-serif; }
+        .btn-excel { 
+            background: #107c41; color: white; padding: 8px 16px; border-radius: 6px; 
+            font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;
+        }
+        .btn-excel:hover { background: #0b5c2f; }
         
         /* === VIEW: HOME (LANDING) === */
         .home-container {
@@ -46,7 +52,7 @@
         }
         
         .home-logo { font-size: 48px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
-        .home-subtitle { font-size: 18px; opacity: 0.8; margin-bottom: 60px; font-weight: 300; }
+        .home-subtitle { font-size: 18px; opacity: 0.9; margin-bottom: 60px; font-weight: 400; letter-spacing: 0.5px; }
         
         .cards-wrapper { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
         
@@ -89,8 +95,8 @@
         .main-content { padding: 40px; overflow-y: auto; height: 100vh; }
 
         .brand-area { margin-bottom: 40px; padding-left: 10px; }
-        .brand-area h1 { color: var(--primary); font-size: 24px; font-weight: 800; }
-        .brand-area span { color: var(--text-gray); font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+        .brand-area h1 { color: var(--primary); font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 5px; }
+        .brand-area span { color: var(--text-gray); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
 
         .menu-item {
             padding: 12px 16px;
@@ -142,9 +148,11 @@
         
         .quality-tags { display: flex; gap: 6px; }
         .q-tag { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
-        .qt-n3 { background: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
-        .qt-n2 { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
-        .qt-n1 { background: #f8fafc; color: #475569; border-color: #e2e8f0; }
+        
+        /* Updated Tag Colors */
+        .qt-n3 { background: #fce7f3; color: #db2777; border-color: #fbcfe8; }
+        .qt-n2 { background: #f3e8ff; color: #9333ea; border-color: #e9d5ff; }
+        .qt-n1 { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 
         .money-val { font-weight: 700; color: var(--primary); font-family: 'Inter', sans-serif; }
 
@@ -174,10 +182,12 @@
         
         /* STUDENT LIST TABLE */
         .student-table-container { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        
+        /* Badges Vibrant */
         .st-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-        .st-n3 { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
-        .st-n2 { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
-        .st-n1 { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .st-n3 { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
+        .st-n2 { background: #f3e8ff; color: #9333ea; border: 1px solid #e9d5ff; }
+        .st-n1 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
         .st-max { background: #fefce8; color: #ca8a04; border: 1px solid #fde047; }
 
     </style>
@@ -186,8 +196,8 @@
 
     <!-- === VIEW 1: HOME LANDING === -->
     <div id="view-home" class="home-container">
-        <div class="home-logo">SESI DATA</div>
-        <div class="home-subtitle">Plataforma de Inteligência Educacional & Monitoramento ENEM</div>
+        <div class="home-logo">SESI GOIÁS</div>
+        <div class="home-subtitle">Resumo Enem em Foco 2025</div>
         
         <div class="cards-wrapper">
             <div class="nav-card" onclick="switchView('executive')">
@@ -209,8 +219,8 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="brand-area">
-                <h1>SESI DATA</h1>
-                <span>EXECUTIVO</span>
+                <h1>SESI GOIÁS</h1>
+                <span>ENEM EM FOCO 2025</span>
             </div>
             <a href="#" onclick="switchView('home')" class="menu-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
             <a href="#" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a>
@@ -222,7 +232,7 @@
                     <h4><i class="fa-solid fa-trophy"></i> Liderança Disputada</h4>
                     <p><strong>Sesi Canaã</strong> e <strong>Sesi Campinas</strong> são os polos de excelência, compartilhando a liderança em investimento e abrigando os únicos alunos <strong>Nível III (>950)</strong>.</p>
                 </div>
-                <div class="insight-card" style="border-left-color: #0ea5e9;">
+                <div class="insight-card" style="border-left-color: #9333ea;">
                     <h4><i class="fa-solid fa-chart-line"></i> Eficiência Oculta</h4>
                     <p>O <strong>Sesi Catalão</strong> se destaca pela qualidade proporcional: com apenas 3 alunos, 66% atingiram o Nível II, indicando um forte trabalho pedagógico focado.</p>
                 </div>
@@ -327,8 +337,8 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="brand-area">
-                <h1>SESI DATA</h1>
-                <span>DETALHADO</span>
+                <h1>SESI GOIÁS</h1>
+                <span>ENEM EM FOCO 2025</span>
             </div>
             <a href="#" onclick="switchView('home')" class="menu-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
             <a href="#" onclick="switchView('executive')" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a>
@@ -361,11 +371,11 @@
             <!-- Detailed KPIs -->
             <div class="kpi-row">
                 <div class="kpi-box primary">
-                    <span class="kpi-label">Alunos na Lista</span>
+                    <span class="kpi-label">Alunos Premiados</span>
                     <span class="kpi-number" id="det-count">0</span>
                 </div>
                 <div class="kpi-box accent">
-                    <span class="kpi-label">Investimento Filtrado</span>
+                    <span class="kpi-label">Premiação Total</span>
                     <span class="kpi-number" id="det-budget">R$ 0</span>
                 </div>
                 <div class="kpi-box">
@@ -380,7 +390,12 @@
 
             <!-- Student List -->
             <div class="student-table-container">
-                <div style="margin-bottom:20px; font-weight:700;">Lista de Alunos Premiados</div>
+                <div style="margin-bottom:20px; font-weight:700; display:flex; justify-content:space-between; align-items:center;">
+                    <span>Lista de Alunos Premiados</span>
+                    <button class="btn btn-excel" onclick="downloadCSV()">
+                        <i class="fa-solid fa-file-excel"></i> Baixar Excel
+                    </button>
+                </div>
                 <table class="styled-table">
                     <thead>
                         <tr>
@@ -401,7 +416,6 @@
 
 <script>
     // === DATA SOURCE ===
-    // Aggregated School Data for Executive View (Includes schools with 0 awards for global efficiency)
     const schools = [
         { name: "Sesi Canaã", enrolled: 109, scores: [940, 920, 920, 900, 900, 920, 920, 900, 920, 920, 960, 920] },
         { name: "Sesi Campinas", enrolled: 160, scores: [920, 940, 960, 940, 900, 940, 940, 900, 920, 920] },
@@ -527,11 +541,9 @@
         const totalBudget = processedSchools.reduce((a,b) => a + b.budget, 0);
         const totalStudents = processedSchools.reduce((a,b) => a + b.students, 0);
         
-        // Find Best Efficiency
         let bestEff = processedSchools[0];
         processedSchools.forEach(s => { if(parseFloat(s.efficiency) > parseFloat(bestEff.efficiency)) bestEff = s; });
         
-        // Find Best Avg Score (Quality)
         let bestAvg = processedSchools[0];
         processedSchools.forEach(s => { 
             if(parseFloat(s.avgScore) > parseFloat(bestAvg.avgScore) && s.students > 0) bestAvg = s; 
@@ -539,10 +551,8 @@
 
         document.getElementById('exec-total-budget').innerText = 'R$ ' + (totalBudget/1000).toFixed(0) + 'k';
         document.getElementById('exec-total-students').innerText = totalStudents;
-        
         document.getElementById('exec-best-eff-val').innerText = bestEff.efficiency + '%';
         document.getElementById('exec-best-eff-name').innerText = bestEff.name;
-        
         document.getElementById('exec-best-avg-val').innerText = bestAvg.avgScore;
         document.getElementById('exec-best-avg-name').innerText = bestAvg.name;
 
@@ -574,7 +584,6 @@
         });
 
         // 3. Charts
-        // Efficiency Chart (Fixed Scales)
         const activeSchools = processedSchools.filter(s => s.students > 0); 
         
         if(effChartInstance) effChartInstance.destroy();
@@ -609,32 +618,18 @@
                 plugins: { legend: { position:'top', align:'end', labels:{boxWidth:8, usePointStyle:true} } },
                 scales: {
                     x: { grid: { display:false } },
-                    y: { 
-                        type: 'linear',
-                        position: 'left',
-                        beginAtZero: true,
-                        grid: { display: false },
-                        ticks: { stepSize: 2 }
-                    },
-                    y1: { 
-                        type: 'linear',
-                        position: 'right',
-                        beginAtZero: true,
-                        grid: { borderDash: [4, 4] },
-                        ticks: { callback: v => v+'%' }
-                    }
+                    y: { type: 'linear', position: 'left', beginAtZero: true, grid: { display: false }, ticks: { stepSize: 2 } },
+                    y1: { type: 'linear', position: 'right', beginAtZero: true, grid: { borderDash: [4, 4] }, ticks: { callback: v => v+'%' } }
                 }
             }
         });
 
-        // Quality Doughnut
         if(qualChartInstance) qualChartInstance.destroy();
         const totL1 = processedSchools.reduce((a,b)=>a+b.l1,0);
         const totL2 = processedSchools.reduce((a,b)=>a+b.l2,0);
         const totL3 = processedSchools.reduce((a,b)=>a+b.l3,0);
         const totMx = processedSchools.reduce((a,b)=>a+b.mx,0);
         
-        // Update Legend
         const legendHTML = `
             <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
                 <span><i class="fa-solid fa-circle" style="color:var(--lvlMax)"></i> Máxima</span>
@@ -663,7 +658,7 @@
                 labels: ['Máxima', 'Nível III', 'Nível II', 'Nível I'],
                 datasets: [{
                     data: [totMx, totL3, totL2, totL1],
-                    backgroundColor: ['#fbbf24', '#4f46e5', '#0ea5e9', '#94a3b8'],
+                    backgroundColor: ['#fbbf24', '#db2777', '#9333ea', '#2563eb'],
                     borderWidth: 0,
                     hoverOffset: 10
                 }]
@@ -678,13 +673,14 @@
     }
 
     // === RENDER DETAILED ===
+    let currentFilteredData = []; // Store for export
+
     function initDetailed() {
         const select = document.getElementById('schoolFilter');
-        if(select.options.length === 1) { // Only populate once
-            // Sort alphabetically for dropdown
+        if(select.options.length === 1) { 
             const sortedSchools = [...processedSchools].sort((a,b) => a.name.localeCompare(b.name));
             sortedSchools.forEach(s => {
-                if(s.students > 0) { // Only show schools with data in filter for now
+                if(s.students > 0) { 
                     const opt = document.createElement('option');
                     opt.value = s.name;
                     opt.innerText = s.name;
@@ -699,20 +695,20 @@
         const selectedSchool = document.getElementById('schoolFilter').value;
         const selectedLevel = document.getElementById('levelFilter').value;
         
-        // Filter Logic
-        const filteredStudents = studentsDB.filter(s => {
+        // Filter & Sort Logic (Highest Score First)
+        currentFilteredData = studentsDB.filter(s => {
             const matchSchool = selectedSchool === 'all' || s.school === selectedSchool;
             const matchLevel = selectedLevel === 'all' || getLevelId(s.score) === selectedLevel;
             return matchSchool && matchLevel;
-        });
+        }).sort((a, b) => b.score - a.score);
 
         // Calc metrics
-        const total = filteredStudents.length;
+        const total = currentFilteredData.length;
         let sumScore = 0;
         let budget = 0;
         let maxScore = 0;
 
-        filteredStudents.forEach(s => {
+        currentFilteredData.forEach(s => {
             sumScore += s.score;
             if(s.score > maxScore) maxScore = s.score;
             if(s.score === 1000) budget += 10000;
@@ -737,7 +733,7 @@
             return;
         }
 
-        filteredStudents.forEach(s => {
+        currentFilteredData.forEach(s => {
             let label = '', badgeClass = '', prize = '';
             if(s.score === 1000) { label = 'Proficiência Máxima'; badgeClass = 'st-max'; prize = 'R$ 10.000'; }
             else if(s.score >= 950) { label = 'Nível III (Ouro)'; badgeClass = 'st-n3'; prize = 'R$ 3.000'; }
@@ -755,6 +751,36 @@
             `;
             tbody.innerHTML += row;
         });
+    }
+
+    // === EXCEL EXPORT ===
+    function downloadCSV() {
+        if(currentFilteredData.length === 0) {
+            alert("Não há dados para exportar.");
+            return;
+        }
+
+        let csvContent = "\uFEFFNome;Escola;Nota;Nível;Prêmio\n"; // Header with BOM for UTF-8
+
+        currentFilteredData.forEach(s => {
+            let label = '', prize = 0;
+            if(s.score === 1000) { label = 'Proficiência Máxima'; prize = 10000; }
+            else if(s.score >= 950) { label = 'Nível III'; prize = 3000; }
+            else if(s.score >= 930) { label = 'Nível II'; prize = 2000; }
+            else { label = 'Nível I'; prize = 1000; }
+
+            csvContent += `${s.name};${s.school};${s.score};${label};${prize}\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "lista_premiados_enem_sesi.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
 </script>
