@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SESI Intelligence | Monitoramento ENEM</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        :root {
+            --primary: #004684;
+            --primary-dark: #003366;
+            --accent: #e30613;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --bg-light: #f8fafc;
+            --white: #ffffff;
+            
+            --lvl1: #94a3b8;
+            --lvl2: #0ea5e9;
+            --lvl3: #4f46e5;
+            --lvlMax: #fbbf24;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-dark); min-height: 100vh; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        /* UTILS */
+        .hidden { display: none !important; }
+        .btn { cursor: pointer; border: none; outline: none; transition: all 0.2s; font-family: 'Montserrat', sans-serif; }
+        
+        /* === VIEW: HOME (LANDING) === */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .home-logo { font-size: 48px; font-weight: 800; margin-bottom: 10px; letter-spacing: -1px; }
+        .home-subtitle { font-size: 18px; opacity: 0.8; margin-bottom: 60px; font-weight: 300; }
+        
+        .cards-wrapper { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+        
+        .nav-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            width: 320px;
+            text-align: center;
+            transition: transform 0.3s, background 0.3s;
+            cursor: pointer;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .nav-icon {
+            font-size: 48px;
+            margin-bottom: 24px;
+            color: var(--white);
+            background: rgba(255,255,255,0.1);
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .nav-title { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+        .nav-desc { font-size: 14px; opacity: 0.8; line-height: 1.5; }
+
+        /* === SHARED LAYOUT FOR DASHBOARDS === */
+        .app-layout { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+        .sidebar { background: white; border-right: 1px solid #e2e8f0; padding: 30px 20px; display: flex; flex-direction: column; gap: 10px; }
+        .main-content { padding: 40px; overflow-y: auto; height: 100vh; }
+
+        .brand-area { margin-bottom: 40px; padding-left: 10px; }
+        .brand-area h1 { color: var(--primary); font-size: 24px; font-weight: 800; }
+        .brand-area span { color: var(--text-gray); font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+
+        .menu-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: var(--text-gray);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .menu-item:hover, .menu-item.active { background: var(--bg-light); color: var(--primary); }
+        .menu-item.active { border-left: 4px solid var(--primary); border-radius: 4px 8px 8px 4px; }
+
+        /* INSIGHT BOXES IN SIDEBAR */
+        .insight-section { margin-top: 30px; display: flex; flex-direction: column; gap: 20px; }
+        .insight-card { background: #f8fafc; padding: 15px; border-radius: 10px; border-left: 3px solid var(--accent); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .insight-card h4 { font-size: 11px; text-transform: uppercase; color: var(--text-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .insight-card p { font-size: 12px; line-height: 1.5; color: var(--text-gray); }
+        .insight-card strong { color: var(--primary); }
+
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .page-title h2 { font-size: 28px; font-weight: 700; color: var(--text-dark); }
+        .page-title p { color: var(--text-gray); margin-top: 4px; }
+
+        /* === COMPONENT: RANKING TABLE (PREMIUM) === */
+        .ranking-card { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); overflow: hidden; margin-top: 30px; }
+        .ranking-header { padding: 20px 30px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .ranking-header h3 { font-size: 16px; font-weight: 700; }
+        
+        .styled-table { width: 100%; border-collapse: collapse; }
+        .styled-table th { text-align: left; padding: 16px 30px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; }
+        .styled-table td { padding: 16px 30px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+        .styled-table tr:hover { background-color: #f8fafc; }
+        
+        .rank-circle { 
+            width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-weight: 700; font-size: 12px; background: #f1f5f9; color: #64748b;
+        }
+        .rank-1 { background: #fef3c7; color: #b45309; }
+        .rank-2 { background: #e0f2fe; color: #0369a1; }
+        .rank-3 { background: #ffedd5; color: #c2410c; }
+
+        .eff-badge {
+            background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;
+            padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700;
+        }
+        
+        .quality-tags { display: flex; gap: 6px; }
+        .q-tag { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+        .qt-n3 { background: #eef2ff; color: #4338ca; border-color: #c7d2fe; }
+        .qt-n2 { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+        .qt-n1 { background: #f8fafc; color: #475569; border-color: #e2e8f0; }
+
+        .money-val { font-weight: 700; color: var(--primary); font-family: 'Inter', sans-serif; }
+
+        /* === COMPONENT: CHARTS === */
+        .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .chart-box { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .chart-head { margin-bottom: 20px; font-weight: 700; font-size: 15px; color: var(--text-dark); }
+
+        /* === COMPONENT: KPIS === */
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .kpi-box { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-bottom: 3px solid transparent; }
+        .kpi-box.primary { border-color: var(--primary); }
+        .kpi-box.accent { border-color: var(--accent); }
+        .kpi-box.success { border-color: #10b981; }
+        
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; display: block; margin-bottom: 8px; }
+        .kpi-number { font-size: 28px; font-weight: 800; color: var(--text-dark); line-height: 1; }
+        .kpi-sub { font-size: 11px; color: var(--text-gray); margin-top: 8px; display: block; line-height: 1.4; }
+        .kpi-highlight { color: var(--primary); font-weight: 700; }
+
+        /* === DETAILED VIEW SPECIFIC === */
+        .filters-container { display: flex; gap: 10px; }
+        .filter-select {
+            padding: 10px 16px; border: 1px solid #e2e8f0; border-radius: 8px;
+            background: white; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; cursor: pointer;
+        }
+        
+        /* STUDENT LIST TABLE */
+        .student-table-container { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+        .st-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .st-n3 { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
+        .st-n2 { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+        .st-n1 { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .st-max { background: #fefce8; color: #ca8a04; border: 1px solid #fde047; }
+
+    </style>
+</head>
+<body>
+
+    <!-- === VIEW 1: HOME LANDING === -->
+    <div id="view-home" class="home-container">
+        <div class="home-logo">SESI DATA</div>
+        <div class="home-subtitle">Plataforma de Inteligência Educacional & Monitoramento ENEM</div>
+        
+        <div class="cards-wrapper">
+            <div class="nav-card" onclick="switchView('executive')">
+                <div class="nav-icon"><i class="fa-solid fa-chart-line"></i></div>
+                <div class="nav-title">Análise Executiva</div>
+                <div class="nav-desc">Visão estratégica consolidada, ranking de eficiência e distribuição orçamentária da rede.</div>
+            </div>
+            
+            <div class="nav-card" onclick="switchView('detailed')">
+                <div class="nav-icon"><i class="fa-solid fa-school"></i></div>
+                <div class="nav-title">Análise Detalhada</div>
+                <div class="nav-desc">Filtre por unidade escolar e nível, visualize listas nominais de alunos e resultados específicos.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- === VIEW 2: EXECUTIVE DASHBOARD === -->
+    <div id="view-executive" class="app-layout hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand-area">
+                <h1>SESI DATA</h1>
+                <span>EXECUTIVO</span>
+            </div>
+            <a href="#" onclick="switchView('home')" class="menu-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a>
+            <a href="#" onclick="switchView('detailed')" class="menu-item"><i class="fa-solid fa-list"></i> Detalhe Escolar</a>
+
+            <!-- INSIGHTS DO COORDENADOR -->
+            <div class="insight-section">
+                <div class="insight-card">
+                    <h4><i class="fa-solid fa-trophy"></i> Liderança Disputada</h4>
+                    <p><strong>Sesi Canaã</strong> e <strong>Sesi Campinas</strong> são os polos de excelência, compartilhando a liderança em investimento e abrigando os únicos alunos <strong>Nível III (>950)</strong>.</p>
+                </div>
+                <div class="insight-card" style="border-left-color: #0ea5e9;">
+                    <h4><i class="fa-solid fa-chart-line"></i> Eficiência Oculta</h4>
+                    <p>O <strong>Sesi Catalão</strong> se destaca pela qualidade proporcional: com apenas 3 alunos, 66% atingiram o Nível II, indicando um forte trabalho pedagógico focado.</p>
+                </div>
+                <div class="insight-card" style="border-left-color: #10b981;">
+                    <h4><i class="fa-solid fa-layer-group"></i> Base da Pirâmide</h4>
+                    <p>Temos uma base sólida de <strong>31 alunos</strong> no Nível I. A estratégia para 2026 deve ser migrar este grupo para o Nível II, elevando a percepção de qualidade.</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <main class="main-content">
+            <div class="header-bar">
+                <div class="page-title">
+                    <h2>Painel Executivo Estratégico</h2>
+                    <p>Consolidado de Performance e Eficiência - Rede SESI Goiás</p>
+                </div>
+                <button class="btn" style="background:var(--white); padding:10px 20px; border-radius:20px; font-weight:600; border:1px solid #e2e8f0;">
+                    <i class="fa-regular fa-calendar"></i> Ano Letivo 2025
+                </button>
+            </div>
+
+            <!-- KPIs Estatísticos -->
+            <div class="kpi-row">
+                <div class="kpi-box primary">
+                    <span class="kpi-label">Volume Total</span>
+                    <span class="kpi-number" id="exec-total-students">0</span>
+                    <span class="kpi-sub">Alunos Premiados<br>de 857 Matriculados</span>
+                </div>
+                <div class="kpi-box success">
+                    <span class="kpi-label">Unidade + Eficiente</span>
+                    <span class="kpi-number" id="exec-best-eff-val" style="font-size: 24px;">0%</span>
+                    <span class="kpi-sub">Taxa de Conversão<br><span id="exec-best-eff-name" class="kpi-highlight">Escola</span></span>
+                </div>
+                <div class="kpi-box accent">
+                    <span class="kpi-label">Melhor Qualidade</span>
+                    <span class="kpi-number" id="exec-best-avg-val" style="font-size: 24px;">0</span>
+                    <span class="kpi-sub">Média dos Premiados<br><span id="exec-best-avg-name" class="kpi-highlight">Escola</span></span>
+                </div>
+                <div class="kpi-box">
+                    <span class="kpi-label">Investimento Total</span>
+                    <span class="kpi-number" id="exec-total-budget">R$ 0k</span>
+                    <span class="kpi-sub">Executado em Prêmios<br>Rede Consolidada</span>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-grid">
+                <!-- Bar Chart: Efficiency with FIXED HEIGHT -->
+                <div class="chart-box">
+                    <div class="chart-head">Matriz de Performance: Volume x Eficiência</div>
+                    <div style="position: relative; height: 300px; width: 100%;">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Doughnut Chart: Funnel -->
+                <div class="chart-box" style="display:flex; flex-direction:column; align-items:center;">
+                    <div class="chart-head" style="align-self:flex-start; width:100%;">Funil de Qualidade</div>
+                    <div style="width:220px; height:220px; position:relative;">
+                        <canvas id="qualityDoughnut"></canvas>
+                        <!-- Center Text -->
+                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;">
+                            <span id="chart-total-center" style="font-size:24px; font-weight:800; color:var(--text-dark); display:block;">0</span>
+                            <span style="font-size:12px; color:var(--text-gray);">Alunos</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px; width:100%;" id="funnel-legend">
+                        <!-- JS Insert -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Premium Table -->
+            <div class="ranking-card">
+                <div class="ranking-header">
+                    <h3>Ranking Estratégico das Unidades</h3>
+                    <span style="font-size:12px; color:var(--text-gray);"><i class="fa-solid fa-sort"></i> Ordenado por Orçamento</span>
+                </div>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th width="5%">#</th>
+                            <th width="25%">Unidade Escolar</th>
+                            <th>Matriculados</th>
+                            <th>Premiados</th>
+                            <th>Eficiência (%)</th>
+                            <th width="25%">Qualidade (Níveis)</th>
+                            <th width="15%" style="text-align:right">Investimento</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingTableBody">
+                        <!-- JS Insert -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- === VIEW 3: DETAILED DASHBOARD === -->
+    <div id="view-detailed" class="app-layout hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand-area">
+                <h1>SESI DATA</h1>
+                <span>DETALHADO</span>
+            </div>
+            <a href="#" onclick="switchView('home')" class="menu-item"><i class="fa-solid fa-arrow-left"></i> Voltar ao Início</a>
+            <a href="#" onclick="switchView('executive')" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Visão Geral</a>
+            <a href="#" class="menu-item active"><i class="fa-solid fa-list"></i> Detalhe Escolar</a>
+        </aside>
+
+        <!-- Content -->
+        <main class="main-content">
+            <div class="header-bar">
+                <div class="page-title">
+                    <h2>Análise por Escola</h2>
+                    <p>Filtre para ver a lista nominal e desempenho específico</p>
+                </div>
+                <div class="filters-container">
+                    <select id="schoolFilter" class="filter-select" onchange="renderDetailedView()">
+                        <option value="all">Todas as Escolas</option>
+                        <!-- Options populated by JS -->
+                    </select>
+                    
+                    <select id="levelFilter" class="filter-select" onchange="renderDetailedView()">
+                        <option value="all">Todos os Níveis</option>
+                        <option value="max">Proficiência Máxima (1000)</option>
+                        <option value="n3">Nível III (950-999)</option>
+                        <option value="n2">Nível II (930-949)</option>
+                        <option value="n1">Nível I (900-929)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Detailed KPIs -->
+            <div class="kpi-row">
+                <div class="kpi-box primary">
+                    <span class="kpi-label">Alunos na Lista</span>
+                    <span class="kpi-number" id="det-count">0</span>
+                </div>
+                <div class="kpi-box accent">
+                    <span class="kpi-label">Investimento Filtrado</span>
+                    <span class="kpi-number" id="det-budget">R$ 0</span>
+                </div>
+                <div class="kpi-box">
+                    <span class="kpi-label">Maior Nota</span>
+                    <span class="kpi-number" id="det-max-score" style="color:var(--lvl3)">0</span>
+                </div>
+                <div class="kpi-box">
+                    <span class="kpi-label">Nota Média</span>
+                    <span class="kpi-number" id="det-avg">0</span>
+                </div>
+            </div>
+
+            <!-- Student List -->
+            <div class="student-table-container">
+                <div style="margin-bottom:20px; font-weight:700;">Lista de Alunos Premiados</div>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Aluno</th>
+                            <th>Escola</th>
+                            <th>Nota Redação</th>
+                            <th>Classificação</th>
+                            <th style="text-align:right">Prêmio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <!-- JS Insert -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // === DATA SOURCE ===
+    // Aggregated School Data for Executive View (Includes schools with 0 awards for global efficiency)
+    const schools = [
+        { name: "Sesi Canaã", enrolled: 109, scores: [940, 920, 920, 900, 900, 920, 920, 900, 920, 920, 960, 920] },
+        { name: "Sesi Campinas", enrolled: 160, scores: [920, 940, 960, 940, 900, 940, 940, 900, 920, 920] },
+        { name: "Sesi Planalto", enrolled: 82, scores: [940, 940, 940, 920, 920, 900, 900, 900] },
+        { name: "Sesi Jundiaí", enrolled: 67, scores: [940, 920, 900, 900, 900] },
+        { name: "Sesi Colorado", enrolled: 102, scores: [940, 900, 900, 900] },
+        { name: "Sesi Catalão", enrolled: 75, scores: [940, 940, 900] },
+        { name: "Sesi Itumbiara", enrolled: 24, scores: [900, 920] },
+        { name: "Sesi Jaiara", enrolled: 36, scores: [900] },
+        { name: "Sesi Aparecida", enrolled: 69, scores: [] },
+        { name: "Sesi Celso Charuri", enrolled: 29, scores: [] },
+        { name: "Sesi Crixás", enrolled: 27, scores: [] },
+        { name: "Sesi Niquelândia", enrolled: 18, scores: [] },
+        { name: "Sesi Rio Verde", enrolled: 59, scores: [] }
+    ];
+
+    // Detailed Student List
+    const studentsDB = [
+        // Canaã (12)
+        { name: "Vitorya Luiza Vieira Carvalho", school: "Sesi Canaã", score: 960 },
+        { name: "Marcela Vitoria Yassunaga", school: "Sesi Canaã", score: 940 },
+        { name: "Ana Luiza Nascimento Piovezan", school: "Sesi Canaã", score: 920 },
+        { name: "Ana Clara Nascimento Piovezan", school: "Sesi Canaã", score: 920 },
+        { name: "Carlos Eduardo Camargos Costa", school: "Sesi Canaã", score: 920 },
+        { name: "Ellen Gleice Oliveira Santos", school: "Sesi Canaã", score: 920 },
+        { name: "Gabriella Borges Macedo", school: "Sesi Canaã", score: 920 },
+        { name: "Guilherme Cordeiro Almeida", school: "Sesi Canaã", score: 920 },
+        { name: "Maria Eduarda Alves Araújo", school: "Sesi Canaã", score: 920 },
+        { name: "Anna Letticia Caldeira Leao", school: "Sesi Canaã", score: 900 },
+        { name: "Annelise Martins Cardoso", school: "Sesi Canaã", score: 900 },
+        { name: "Fellipe Gabriel Vieira Medeiro", school: "Sesi Canaã", score: 900 },
+        // Campinas (10)
+        { name: "Ana Elisa Alves Fernandes", school: "Sesi Campinas", score: 960 },
+        { name: "Ana Clara Neves Soares", school: "Sesi Campinas", score: 940 },
+        { name: "Anne Caroline Dos Santos", school: "Sesi Campinas", score: 940 },
+        { name: "Heitor Sousa Goncalves", school: "Sesi Campinas", score: 940 },
+        { name: "Joao Pedro Leandro F. Carneiro", school: "Sesi Campinas", score: 940 },
+        { name: "Ana Clara Ferreira Gonzales", school: "Sesi Campinas", score: 920 },
+        { name: "Sophia Amorim Cavalcante", school: "Sesi Campinas", score: 920 },
+        { name: "Vitor Gabriel Alves Nunes", school: "Sesi Campinas", score: 920 },
+        { name: "Catarina Iskandar Mesquita", school: "Sesi Campinas", score: 900 },
+        { name: "Matheus Henrique Rosa Da Silva", school: "Sesi Campinas", score: 900 },
+        // Planalto (8)
+        { name: "Anna Luyza Rodrigues Silva", school: "Sesi Planalto", score: 940 },
+        { name: "Juan Alves de Jesus Araujo", school: "Sesi Planalto", score: 940 },
+        { name: "Maryana Karlla Rodrigues", school: "Sesi Planalto", score: 940 },
+        { name: "Yasmim Sa Prado Dos Santos", school: "Sesi Planalto", score: 920 },
+        { name: "Jamilly Paiva Rodrigues", school: "Sesi Planalto", score: 920 },
+        { name: "Ana Carolina Mariano de Castro", school: "Sesi Planalto", score: 900 },
+        { name: "Amanda Dorneles Silvestre", school: "Sesi Planalto", score: 900 },
+        { name: "Isabely Ruppel", school: "Sesi Planalto", score: 900 },
+        // Jundiaí (5)
+        { name: "Isadora Floriano Macedo", school: "Sesi Jundiaí", score: 940 },
+        { name: "Yasmin Sousa Da Silva", school: "Sesi Jundiaí", score: 920 },
+        { name: "Anna Luisa Rodrigues Andrade", school: "Sesi Jundiaí", score: 900 },
+        { name: "Luna Galdino Damasceno", school: "Sesi Jundiaí", score: 900 },
+        { name: "Mariana Alessandra P. Lacerda", school: "Sesi Jundiaí", score: 900 },
+        // Colorado (4)
+        { name: "Lucas da Cruz Arfealiwa", school: "Sesi Colorado", score: 940 },
+        { name: "Ananda Ferreira Rocha", school: "Sesi Colorado", score: 900 },
+        { name: "Beatriz Assis Carrijo", school: "Sesi Colorado", score: 900 },
+        { name: "Maria Eduarda Gomes Silveira", school: "Sesi Colorado", score: 900 },
+        // Catalão (3)
+        { name: "Ana Beatriz da Silva Macedo", school: "Sesi Catalão", score: 940 },
+        { name: "Emilly Sophia Silva Freitas", school: "Sesi Catalão", score: 940 },
+        { name: "Nicolle Silverio de Melo Santos", school: "Sesi Catalão", score: 900 },
+        // Itumbiara (2)
+        { name: "Lara Borges Ribeiro", school: "Sesi Itumbiara", score: 920 },
+        { name: "Maria Fernanda Souza Lopes", school: "Sesi Itumbiara", score: 900 },
+        // Jaiara (1)
+        { name: "Maria Eduarda C. Pamplona", school: "Sesi Jaiara", score: 900 }
+    ];
+
+    // Helper to get Level ID from Score
+    function getLevelId(score) {
+        if (score === 1000) return 'max';
+        if (score >= 950) return 'n3';
+        if (score >= 930) return 'n2';
+        if (score >= 900) return 'n1';
+        return 'none';
+    }
+
+    // === LOGIC PROCESSING ===
+    function processSchoolData() {
+        return schools.map(s => {
+            let l1 = 0, l2 = 0, l3 = 0, mx = 0;
+            let sumScores = 0;
+            s.scores.forEach(sc => {
+                sumScores += sc;
+                if(sc === 1000) mx++;
+                else if(sc >= 950) l3++;
+                else if(sc >= 930) l2++;
+                else if(sc >= 900) l1++;
+            });
+            const budget = (l1*1000) + (l2*2000) + (l3*3000) + (mx*10000);
+            const efficiency = s.enrolled > 0 ? ((s.scores.length / s.enrolled) * 100).toFixed(1) : 0;
+            const avgScore = s.scores.length > 0 ? (sumScores / s.scores.length).toFixed(1) : 0;
+            
+            return { ...s, students: s.scores.length, l1, l2, l3, mx, budget, efficiency, avgScore };
+        }).sort((a, b) => b.budget - a.budget || b.students - a.students);
+    }
+
+    const processedSchools = processSchoolData();
+
+    // === NAVIGATION ===
+    function switchView(viewName) {
+        document.getElementById('view-home').classList.add('hidden');
+        document.getElementById('view-executive').classList.add('hidden');
+        document.getElementById('view-detailed').classList.add('hidden');
+        
+        document.getElementById(`view-${viewName}`).classList.remove('hidden');
+        
+        if(viewName === 'executive') renderExecutive();
+        if(viewName === 'detailed') initDetailed();
+    }
+
+    // === RENDER EXECUTIVE ===
+    let effChartInstance = null;
+    let qualChartInstance = null;
+
+    function renderExecutive() {
+        // 1. Populate KPI
+        const totalBudget = processedSchools.reduce((a,b) => a + b.budget, 0);
+        const totalStudents = processedSchools.reduce((a,b) => a + b.students, 0);
+        
+        // Find Best Efficiency
+        let bestEff = processedSchools[0];
+        processedSchools.forEach(s => { if(parseFloat(s.efficiency) > parseFloat(bestEff.efficiency)) bestEff = s; });
+        
+        // Find Best Avg Score (Quality)
+        let bestAvg = processedSchools[0];
+        processedSchools.forEach(s => { 
+            if(parseFloat(s.avgScore) > parseFloat(bestAvg.avgScore) && s.students > 0) bestAvg = s; 
+        });
+
+        document.getElementById('exec-total-budget').innerText = 'R$ ' + (totalBudget/1000).toFixed(0) + 'k';
+        document.getElementById('exec-total-students').innerText = totalStudents;
+        
+        document.getElementById('exec-best-eff-val').innerText = bestEff.efficiency + '%';
+        document.getElementById('exec-best-eff-name').innerText = bestEff.name;
+        
+        document.getElementById('exec-best-avg-val').innerText = bestAvg.avgScore;
+        document.getElementById('exec-best-avg-name').innerText = bestAvg.name;
+
+        // 2. Populate Table
+        const tbody = document.getElementById('rankingTableBody');
+        tbody.innerHTML = '';
+        processedSchools.forEach((s, i) => {
+            let rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+            let qualTags = '<div class="quality-tags">';
+            if(s.mx > 0) qualTags += `<span class="q-tag" style="background:#fefce8; color:#ca8a04; border-color:#fde047">${s.mx}x MAX</span>`;
+            if(s.l3 > 0) qualTags += `<span class="q-tag qt-n3">${s.l3}x N3</span>`;
+            if(s.l2 > 0) qualTags += `<span class="q-tag qt-n2">${s.l2}x N2</span>`;
+            if(s.l1 > 0) qualTags += `<span class="q-tag qt-n1">${s.l1}x N1</span>`;
+            if(s.students === 0) qualTags += `<span class="q-tag" style="color:#cbd5e1">-</span>`;
+            qualTags += '</div>';
+
+            const row = `
+                <tr>
+                    <td><div class="rank-circle ${rankClass}">${i+1}</div></td>
+                    <td style="font-weight:600;">${s.name}</td>
+                    <td>${s.enrolled}</td>
+                    <td>${s.students}</td>
+                    <td><span class="eff-badge" style="${s.students===0 ? 'background:#f1f5f9; color:#94a3b8; border-color:#e2e8f0' : ''}">${s.efficiency}%</span></td>
+                    <td>${qualTags}</td>
+                    <td class="money-val" style="text-align:right">R$ ${s.budget.toLocaleString('pt-BR')}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+
+        // 3. Charts
+        // Efficiency Chart (Fixed Scales)
+        const activeSchools = processedSchools.filter(s => s.students > 0); 
+        
+        if(effChartInstance) effChartInstance.destroy();
+        const ctxEff = document.getElementById('efficiencyChart').getContext('2d');
+        effChartInstance = new Chart(ctxEff, {
+            type: 'bar',
+            data: {
+                labels: activeSchools.map(s => s.name.replace('Sesi ', '')),
+                datasets: [{
+                    label: 'Alunos Premiados',
+                    data: activeSchools.map(s => s.students),
+                    backgroundColor: '#004684',
+                    borderRadius: 4,
+                    order: 2,
+                    yAxisID: 'y'
+                }, {
+                    label: 'Eficiência (%)',
+                    data: activeSchools.map(s => s.efficiency),
+                    type: 'line',
+                    borderColor: '#e30613',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'white',
+                    pointBorderColor: '#e30613',
+                    pointRadius: 4,
+                    order: 1,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position:'top', align:'end', labels:{boxWidth:8, usePointStyle:true} } },
+                scales: {
+                    x: { grid: { display:false } },
+                    y: { 
+                        type: 'linear',
+                        position: 'left',
+                        beginAtZero: true,
+                        grid: { display: false },
+                        ticks: { stepSize: 2 }
+                    },
+                    y1: { 
+                        type: 'linear',
+                        position: 'right',
+                        beginAtZero: true,
+                        grid: { borderDash: [4, 4] },
+                        ticks: { callback: v => v+'%' }
+                    }
+                }
+            }
+        });
+
+        // Quality Doughnut
+        if(qualChartInstance) qualChartInstance.destroy();
+        const totL1 = processedSchools.reduce((a,b)=>a+b.l1,0);
+        const totL2 = processedSchools.reduce((a,b)=>a+b.l2,0);
+        const totL3 = processedSchools.reduce((a,b)=>a+b.l3,0);
+        const totMx = processedSchools.reduce((a,b)=>a+b.mx,0);
+        
+        // Update Legend
+        const legendHTML = `
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
+                <span><i class="fa-solid fa-circle" style="color:var(--lvlMax)"></i> Máxima</span>
+                <strong>${totMx}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
+                <span><i class="fa-solid fa-circle" style="color:var(--lvl3)"></i> Nível III</span>
+                <strong>${totL3}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
+                <span><i class="fa-solid fa-circle" style="color:var(--lvl2)"></i> Nível II</span>
+                <strong>${totL2}</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray);">
+                <span><i class="fa-solid fa-circle" style="color:var(--lvl1)"></i> Nível I</span>
+                <strong>${totL1}</strong>
+            </div>
+        `;
+        document.getElementById('funnel-legend').innerHTML = legendHTML;
+        document.getElementById('chart-total-center').innerText = totalStudents;
+        
+        const ctxQual = document.getElementById('qualityDoughnut').getContext('2d');
+        qualChartInstance = new Chart(ctxQual, {
+            type: 'doughnut',
+            data: {
+                labels: ['Máxima', 'Nível III', 'Nível II', 'Nível I'],
+                datasets: [{
+                    data: [totMx, totL3, totL2, totL1],
+                    backgroundColor: ['#fbbf24', '#4f46e5', '#0ea5e9', '#94a3b8'],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
+
+    // === RENDER DETAILED ===
+    function initDetailed() {
+        const select = document.getElementById('schoolFilter');
+        if(select.options.length === 1) { // Only populate once
+            // Sort alphabetically for dropdown
+            const sortedSchools = [...processedSchools].sort((a,b) => a.name.localeCompare(b.name));
+            sortedSchools.forEach(s => {
+                if(s.students > 0) { // Only show schools with data in filter for now
+                    const opt = document.createElement('option');
+                    opt.value = s.name;
+                    opt.innerText = s.name;
+                    select.appendChild(opt);
+                }
+            });
+        }
+        renderDetailedView();
+    }
+
+    function renderDetailedView() {
+        const selectedSchool = document.getElementById('schoolFilter').value;
+        const selectedLevel = document.getElementById('levelFilter').value;
+        
+        // Filter Logic
+        const filteredStudents = studentsDB.filter(s => {
+            const matchSchool = selectedSchool === 'all' || s.school === selectedSchool;
+            const matchLevel = selectedLevel === 'all' || getLevelId(s.score) === selectedLevel;
+            return matchSchool && matchLevel;
+        });
+
+        // Calc metrics
+        const total = filteredStudents.length;
+        let sumScore = 0;
+        let budget = 0;
+        let maxScore = 0;
+
+        filteredStudents.forEach(s => {
+            sumScore += s.score;
+            if(s.score > maxScore) maxScore = s.score;
+            if(s.score === 1000) budget += 10000;
+            else if(s.score >= 950) budget += 3000;
+            else if(s.score >= 930) budget += 2000;
+            else if(s.score >= 900) budget += 1000;
+        });
+
+        const avg = total > 0 ? (sumScore / total).toFixed(1) : 0;
+
+        // Update DOM
+        document.getElementById('det-count').innerText = total;
+        document.getElementById('det-budget').innerText = 'R$ ' + budget.toLocaleString('pt-BR');
+        document.getElementById('det-max-score').innerText = maxScore;
+        document.getElementById('det-avg').innerText = avg;
+
+        const tbody = document.getElementById('studentTableBody');
+        tbody.innerHTML = '';
+
+        if(total === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#94a3b8; padding:30px;">Nenhum aluno encontrado com estes filtros.</td></tr>';
+            return;
+        }
+
+        filteredStudents.forEach(s => {
+            let label = '', badgeClass = '', prize = '';
+            if(s.score === 1000) { label = 'Proficiência Máxima'; badgeClass = 'st-max'; prize = 'R$ 10.000'; }
+            else if(s.score >= 950) { label = 'Nível III (Ouro)'; badgeClass = 'st-n3'; prize = 'R$ 3.000'; }
+            else if(s.score >= 930) { label = 'Nível II (Prata)'; badgeClass = 'st-n2'; prize = 'R$ 2.000'; }
+            else { label = 'Nível I (Bronze)'; badgeClass = 'st-n1'; prize = 'R$ 1.000'; }
+
+            const row = `
+                <tr>
+                    <td style="font-weight:600">${s.name}</td>
+                    <td style="color:#64748b; font-size:12px;">${s.school}</td>
+                    <td style="font-weight:700">${s.score}</td>
+                    <td><span class="st-badge ${badgeClass}">${label}</span></td>
+                    <td class="money-val" style="text-align:right">${prize}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+        });
+    }
+
+</script>
+
+</body>
+</html>
