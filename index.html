@@ -129,8 +129,8 @@
         .ranking-header h3 { font-size: 16px; font-weight: 700; }
         
         .styled-table { width: 100%; border-collapse: collapse; }
-        .styled-table th { text-align: left; padding: 16px 30px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; }
-        .styled-table td { padding: 16px 30px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+        .styled-table th { text-align: left; padding: 16px 20px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; }
+        .styled-table td { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
         .styled-table tr:hover { background-color: #f8fafc; }
         
         .rank-circle { 
@@ -153,6 +153,18 @@
         .qt-n3 { background: #fce7f3; color: #db2777; border-color: #fbcfe8; }
         .qt-n2 { background: #f3e8ff; color: #9333ea; border-color: #e9d5ff; }
         .qt-n1 { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
+
+        /* Itinerary Badges */
+        .itin-tags { display: flex; gap: 4px; }
+        .itin-tag { padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; display: inline-block; }
+        .itin-iftp { background-color: #f97316; } /* Laranja */
+        .itin-ifa { background-color: #3b82f6; } /* Azul */
+        
+        /* Award Breakdown Badges */
+        .award-breakdown { display: flex; gap: 4px; margin-top: 4px; }
+        .ab-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+        .ab-iftp { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+        .ab-ifa { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
 
         .money-val { font-weight: 700; color: var(--primary); font-family: 'Inter', sans-serif; }
 
@@ -310,17 +322,18 @@
             <div class="ranking-card">
                 <div class="ranking-header">
                     <h3>Ranking Estratégico das Unidades</h3>
-                    <span style="font-size:12px; color:var(--text-gray);"><i class="fa-solid fa-sort"></i> Ordenado por Orçamento</span>
+                    <span style="font-size:12px; color:var(--text-gray);"><i class="fa-solid fa-sort"></i> Ordenado por Alunos Premiados</span>
                 </div>
                 <table class="styled-table">
                     <thead>
                         <tr>
                             <th width="5%">#</th>
-                            <th width="25%">Unidade Escolar</th>
+                            <th width="20%">Unidade Escolar</th>
+                            <th width="10%">Itinerários</th>
                             <th>Matriculados</th>
                             <th>Premiados</th>
                             <th>Eficiência (%)</th>
-                            <th width="25%">Qualidade (Níveis)</th>
+                            <th width="20%">Qualidade (Níveis)</th>
                             <th width="15%" style="text-align:right">Investimento</th>
                         </tr>
                     </thead>
@@ -401,6 +414,7 @@
                         <tr>
                             <th>Aluno</th>
                             <th>Escola</th>
+                            <th>Itinerário</th>
                             <th>Nota Redação</th>
                             <th>Classificação</th>
                             <th style="text-align:right">Prêmio</th>
@@ -416,79 +430,79 @@
 
 <script>
     // === DATA SOURCE ===
-    // Aggregated School Data for Executive View (Includes schools with 0 awards for global efficiency)
+    // Aggregated School Data with Itinerary
     const schools = [
-        { name: "Sesi Canaã", enrolled: 109, scores: [940, 920, 920, 900, 900, 920, 920, 900, 920, 920, 960, 920] },
-        { name: "Sesi Campinas", enrolled: 160, scores: [920, 940, 960, 940, 900, 940, 940, 900, 920, 920] },
-        { name: "Sesi Planalto", enrolled: 82, scores: [940, 940, 940, 920, 920, 900, 900, 900, 940] },
-        { name: "Sesi Jundiaí", enrolled: 67, scores: [940, 920, 900, 900, 900] },
-        { name: "Sesi Colorado", enrolled: 102, scores: [940, 900, 900, 900] },
-        { name: "Sesi Catalão", enrolled: 75, scores: [940, 940, 900] },
-        { name: "Sesi Itumbiara", enrolled: 24, scores: [900, 920] },
-        { name: "Sesi Jaiara", enrolled: 36, scores: [900] },
-        { name: "Sesi Aparecida", enrolled: 69, scores: [] },
-        { name: "Sesi Celso Charuri", enrolled: 29, scores: [] },
-        { name: "Sesi Crixás", enrolled: 27, scores: [] },
-        { name: "Sesi Niquelândia", enrolled: 18, scores: [] },
-        { name: "Sesi Rio Verde", enrolled: 59, scores: [] }
+        { name: "Sesi Canaã", enrolled: 109, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Campinas", enrolled: 160, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Planalto", enrolled: 82, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Jundiaí", enrolled: 67, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Colorado", enrolled: 102, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Catalão", enrolled: 75, itineraries: ['IFTP'] },
+        { name: "Sesi Itumbiara", enrolled: 24, itineraries: ['IFTP'] },
+        { name: "Sesi Jaiara", enrolled: 36, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Rio Verde", enrolled: 59, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Aparecida", enrolled: 69, itineraries: ['IFTP'] },
+        { name: "Sesi Celso Charuri", enrolled: 29, itineraries: ['IFTP'] },
+        { name: "Sesi Crixás", enrolled: 27, itineraries: ['IFTP'] },
+        { name: "Sesi Niquelândia", enrolled: 18, itineraries: ['IFTP'] }
     ];
 
-    // Detailed Student List
+    // Detailed Student List with Mapped Itinerary from PDF attachment
     const studentsDB = [
         // Canaã (12)
-        { name: "Vitorya Luiza Vieira Carvalho", school: "Sesi Canaã", score: 960 },
-        { name: "Marcela Vitoria Yassunaga", school: "Sesi Canaã", score: 940 },
-        { name: "Ana Luiza Nascimento Piovezan", school: "Sesi Canaã", score: 920 },
-        { name: "Ana Clara Nascimento Piovezan", school: "Sesi Canaã", score: 920 },
-        { name: "Carlos Eduardo Camargos Costa", school: "Sesi Canaã", score: 920 },
-        { name: "Ellen Gleice Oliveira Santos", school: "Sesi Canaã", score: 920 },
-        { name: "Gabriella Borges Macedo", school: "Sesi Canaã", score: 920 },
-        { name: "Guilherme Cordeiro Almeida", school: "Sesi Canaã", score: 920 },
-        { name: "Maria Eduarda Alves Araújo", school: "Sesi Canaã", score: 920 },
-        { name: "Anna Letticia Caldeira Leao", school: "Sesi Canaã", score: 900 },
-        { name: "Annelise Martins Cardoso", school: "Sesi Canaã", score: 900 },
-        { name: "Fellipe Gabriel Vieira Medeiro", school: "Sesi Canaã", score: 900 },
+        { name: "Vitorya Luiza Vieira Carvalho", school: "Sesi Canaã", score: 960, itin: "IFTP" },
+        { name: "Marcela Vitoria Yassunaga de Freitas", school: "Sesi Canaã", score: 940, itin: "IFA" },
+        { name: "Ana Luiza Nascimento Piovezan", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Ana Clara Nascimento Piovezan", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Carlos Eduardo Camargos Costa", school: "Sesi Canaã", score: 920, itin: "IFTP" },
+        { name: "Ellen Gleice Oliveira Santos", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Gabriella Borges Macedo", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Guilherme Cordeiro Almeida", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Maria Eduarda Alves Araújo", school: "Sesi Canaã", score: 920, itin: "IFA" },
+        { name: "Anna Letticia Caldeira Leao", school: "Sesi Canaã", score: 900, itin: "IFTP" },
+        { name: "Annelise Martins Cardoso", school: "Sesi Canaã", score: 900, itin: "IFTP" },
+        { name: "Fellipe Gabriel Vieira Medeiro", school: "Sesi Canaã", score: 900, itin: "IFA" },
         // Campinas (10)
-        { name: "Ana Elisa Alves Fernandes", school: "Sesi Campinas", score: 960 },
-        { name: "Ana Clara Neves Soares", school: "Sesi Campinas", score: 940 },
-        { name: "Anne Caroline Dos Santos", school: "Sesi Campinas", score: 940 },
-        { name: "Heitor Sousa Goncalves", school: "Sesi Campinas", score: 940 },
-        { name: "Joao Pedro Leandro F. Carneiro", school: "Sesi Campinas", score: 940 },
-        { name: "Ana Clara Ferreira Gonzales", school: "Sesi Campinas", score: 920 },
-        { name: "Sophia Amorim Cavalcante", school: "Sesi Campinas", score: 920 },
-        { name: "Vitor Gabriel Alves Nunes", school: "Sesi Campinas", score: 920 },
-        { name: "Catarina Iskandar Mesquita", school: "Sesi Campinas", score: 900 },
-        { name: "Matheus Henrique Rosa Da Silva", school: "Sesi Campinas", score: 900 },
+        { name: "Ana Elisa Alves Fernandes", school: "Sesi Campinas", score: 960, itin: "IFA" },
+        { name: "Ana Clara Neves Soares", school: "Sesi Campinas", score: 940, itin: "IFA" },
+        { name: "Anne Caroline Dos Santos", school: "Sesi Campinas", score: 940, itin: "IFA" },
+        { name: "Heitor Sousa Goncalves", school: "Sesi Campinas", score: 940, itin: "IFTP" },
+        { name: "Joao Pedro Leandro F. Carneiro", school: "Sesi Campinas", score: 940, itin: "IFTP" },
+        { name: "Ana Clara Ferreira Gonzales", school: "Sesi Campinas", score: 920, itin: "IFA" },
+        { name: "Sophia Amorim Cavalcante", school: "Sesi Campinas", score: 920, itin: "IFTP" },
+        { name: "Vitor Gabriel Alves Nunes", school: "Sesi Campinas", score: 920, itin: "IFA" },
+        { name: "Catarina Iskandar Mesquita", school: "Sesi Campinas", score: 900, itin: "IFTP" },
+        { name: "Matheus Henrique Rosa Da Silva", school: "Sesi Campinas", score: 900, itin: "IFTP" },
         // Planalto (9)
-        { name: "Samuel Pereira dos Santos", school: "Sesi Planalto", score: 940 },
-        { name: "Anna Luyza Rodrigues Silva", school: "Sesi Planalto", score: 940 },
-        { name: "Juan Alves de Jesus Araujo", school: "Sesi Planalto", score: 940 },
-        { name: "Maryana Karlla Rodrigues", school: "Sesi Planalto", score: 940 },
-        { name: "Yasmim Sa Prado Dos Santos", school: "Sesi Planalto", score: 920 },
-        { name: "Jamilly Paiva Rodrigues", school: "Sesi Planalto", score: 920 },
-        { name: "Ana Carolina Mariano de Castro", school: "Sesi Planalto", score: 900 },
-        { name: "Amanda Dorneles Silvestre", school: "Sesi Planalto", score: 900 },
-        { name: "Isabely Ruppel", school: "Sesi Planalto", score: 900 },
+        { name: "Samuel Pereira dos Santos", school: "Sesi Planalto", score: 940, itin: "IFA" },
+        { name: "Anna Luyza Rodrigues Silva", school: "Sesi Planalto", score: 940, itin: "IFA" },
+        { name: "Juan Alves de Jesus Araujo", school: "Sesi Planalto", score: 940, itin: "IFA" },
+        { name: "Maryana Karlla Rodrigues", school: "Sesi Planalto", score: 940, itin: "IFA" },
+        { name: "Yasmim Sa Prado Dos Santos", school: "Sesi Planalto", score: 920, itin: "IFA" },
+        { name: "Jamilly Paiva Rodrigues", school: "Sesi Planalto", score: 920, itin: "IFA" },
+        { name: "Ana Carolina Mariano de Castro", school: "Sesi Planalto", score: 900, itin: "IFA" },
+        { name: "Amanda Dorneles Silvestre", school: "Sesi Planalto", score: 900, itin: "IFTP" },
+        { name: "Isabely Ruppel", school: "Sesi Planalto", score: 900, itin: "IFA" },
         // Jundiaí (5)
-        { name: "Isadora Floriano Macedo", school: "Sesi Jundiaí", score: 940 },
-        { name: "Yasmin Sousa Da Silva", school: "Sesi Jundiaí", score: 920 },
-        { name: "Anna Luisa Rodrigues Andrade", school: "Sesi Jundiaí", score: 900 },
-        { name: "Luna Galdino Damasceno", school: "Sesi Jundiaí", score: 900 },
-        { name: "Mariana Alessandra P. Lacerda", school: "Sesi Jundiaí", score: 900 },
+        { name: "Isadora Floriano Macedo", school: "Sesi Jundiaí", score: 940, itin: "IFTP" },
+        { name: "Yasmin Sousa Da Silva", school: "Sesi Jundiaí", score: 920, itin: "IFTP" },
+        { name: "Anna Luisa Rodrigues Andrade", school: "Sesi Jundiaí", score: 900, itin: "IFTP" },
+        { name: "Luna Galdino Damasceno", school: "Sesi Jundiaí", score: 900, itin: "IFTP" },
+        { name: "Mariana Alessandra P. Lacerda", school: "Sesi Jundiaí", score: 900, itin: "IFTP" },
         // Colorado (4)
-        { name: "Lucas da Cruz Arfealiwa", school: "Sesi Colorado", score: 940 },
-        { name: "Ananda Ferreira Rocha", school: "Sesi Colorado", score: 900 },
-        { name: "Beatriz Assis Carrijo", school: "Sesi Colorado", score: 900 },
-        { name: "Maria Eduarda Gomes Silveira", school: "Sesi Colorado", score: 900 },
+        { name: "Lucas da Cruz Arfealiwa", school: "Sesi Colorado", score: 940, itin: "IFTP" },
+        { name: "Ananda Ferreira Rocha", school: "Sesi Colorado", score: 900, itin: "IFTP" },
+        { name: "Beatriz Assis Carrijo", school: "Sesi Colorado", score: 900, itin: "IFA" },
+        { name: "Maria Eduarda Gomes Silveira", school: "Sesi Colorado", score: 900, itin: "IFA" },
         // Catalão (3)
-        { name: "Ana Beatriz da Silva Macedo", school: "Sesi Catalão", score: 940 },
-        { name: "Emilly Sophia Silva Freitas", school: "Sesi Catalão", score: 940 },
-        { name: "Nicolle Silverio de Melo Santos", school: "Sesi Catalão", score: 900 },
+        { name: "Ana Beatriz da Silva Macedo", school: "Sesi Catalão", score: 940, itin: "IFTP" },
+        { name: "Emilly Sophia Silva Freitas", school: "Sesi Catalão", score: 940, itin: "IFTP" },
+        { name: "Nicolle Silverio de Melo Santos", school: "Sesi Catalão", score: 900, itin: "IFTP" },
         // Itumbiara (2)
-        { name: "Lara Borges Ribeiro", school: "Sesi Itumbiara", score: 920 },
-        { name: "Maria Fernanda Souza Lopes", school: "Sesi Itumbiara", score: 900 },
+        { name: "Lara Borges Ribeiro", school: "Sesi Itumbiara", score: 920, itin: "IFTP" },
+        { name: "Maria Fernanda Souza Lopes", school: "Sesi Itumbiara", score: 900, itin: "IFTP" },
         // Jaiara (1)
-        { name: "Maria Eduarda C. Pamplona", school: "Sesi Jaiara", score: 900 }
+        { name: "Maria Eduarda C. Pamplona", school: "Sesi Jaiara", score: 900, itin: "IFTP" }
     ];
 
     // Helper to get Level ID from Score
@@ -505,19 +519,37 @@
         return schools.map(s => {
             let l1 = 0, l2 = 0, l3 = 0, mx = 0;
             let sumScores = 0;
-            s.scores.forEach(sc => {
-                sumScores += sc;
-                if(sc === 1000) mx++;
-                else if(sc >= 950) l3++;
-                else if(sc >= 930) l2++;
-                else if(sc >= 900) l1++;
-            });
-            const budget = (l1*1000) + (l2*2000) + (l3*3000) + (mx*10000);
-            const efficiency = s.enrolled > 0 ? ((s.scores.length / s.enrolled) * 100).toFixed(1) : 0;
-            const avgScore = s.scores.length > 0 ? (sumScores / s.scores.length).toFixed(1) : 0;
+            let iftpCount = 0;
+            let ifaCount = 0;
+            let studentCount = 0;
+
+            // Find all students for this school from DB
+            const schoolStudents = studentsDB.filter(st => st.school === s.name);
             
-            return { ...s, students: s.scores.length, l1, l2, l3, mx, budget, efficiency, avgScore };
-        }).sort((a, b) => b.budget - a.budget || b.students - a.students);
+            schoolStudents.forEach(st => {
+                sumScores += st.score;
+                studentCount++;
+                if(st.score === 1000) mx++;
+                else if(st.score >= 950) l3++;
+                else if(st.score >= 930) l2++;
+                else if(st.score >= 900) l1++;
+
+                if(st.itin === 'IFTP') iftpCount++;
+                if(st.itin === 'IFA') ifaCount++;
+            });
+
+            const budget = (l1*1000) + (l2*2000) + (l3*3000) + (mx*10000);
+            const efficiency = s.enrolled > 0 ? ((studentCount / s.enrolled) * 100).toFixed(1) : 0;
+            const avgScore = studentCount > 0 ? (sumScores / studentCount).toFixed(1) : 0;
+            
+            return { 
+                ...s, 
+                students: studentCount, 
+                l1, l2, l3, mx, 
+                budget, efficiency, avgScore,
+                iftpCount, ifaCount
+            };
+        }).sort((a, b) => b.students - a.students || b.budget - a.budget);
     }
 
     const processedSchools = processSchoolData();
@@ -571,12 +603,33 @@
             if(s.students === 0) qualTags += `<span class="q-tag" style="color:#cbd5e1">-</span>`;
             qualTags += '</div>';
 
+            // Itinerary Availability Badges
+            let itinHtml = '<div class="itin-tags">-</div>';
+            if(s.itineraries && s.itineraries.length > 0) {
+                itinHtml = '<div class="itin-tags">';
+                s.itineraries.forEach(itin => {
+                    let className = itin === 'IFTP' ? 'itin-iftp' : 'itin-ifa';
+                    itinHtml += `<span class="itin-tag ${className}">${itin}</span>`;
+                });
+                itinHtml += '</div>';
+            }
+
+            // Award Breakdown Badges
+            let awardsBreakdownHtml = `<div style="font-weight:700; font-size:16px;">${s.students}</div>`;
+            if(s.students > 0) {
+                awardsBreakdownHtml += `<div class="award-breakdown">`;
+                if(s.iftpCount > 0) awardsBreakdownHtml += `<span class="ab-badge ab-iftp">${s.iftpCount} IFTP</span>`;
+                if(s.ifaCount > 0) awardsBreakdownHtml += `<span class="ab-badge ab-ifa">${s.ifaCount} IFA</span>`;
+                awardsBreakdownHtml += `</div>`;
+            }
+
             const row = `
                 <tr>
                     <td><div class="rank-circle ${rankClass}">${i+1}</div></td>
                     <td style="font-weight:600;">${s.name}</td>
+                    <td>${itinHtml}</td>
                     <td>${s.enrolled}</td>
-                    <td>${s.students}</td>
+                    <td>${awardsBreakdownHtml}</td>
                     <td><span class="eff-badge" style="${s.students===0 ? 'background:#f1f5f9; color:#94a3b8; border-color:#e2e8f0' : ''}">${s.efficiency}%</span></td>
                     <td>${qualTags}</td>
                     <td class="money-val" style="text-align:right">R$ ${s.budget.toLocaleString('pt-BR')}</td>
@@ -742,10 +795,16 @@
             else if(s.score >= 930) { label = 'Nível II (Prata)'; badgeClass = 'st-n2'; prize = 'R$ 2.000'; }
             else { label = 'Nível I (Bronze)'; badgeClass = 'st-n1'; prize = 'R$ 1.000'; }
 
+            // Student Itinerary Badge
+            let itinHtml = '<span class="itin-tag" style="background:#cbd5e1">-</span>';
+            if(s.itin === 'IFTP') itinHtml = '<span class="itin-tag itin-iftp">IFTP</span>';
+            if(s.itin === 'IFA') itinHtml = '<span class="itin-tag itin-ifa">IFA</span>';
+
             const row = `
                 <tr>
                     <td style="font-weight:600">${s.name}</td>
                     <td style="color:#64748b; font-size:12px;">${s.school}</td>
+                    <td>${itinHtml}</td>
                     <td style="font-weight:700">${s.score}</td>
                     <td><span class="st-badge ${badgeClass}">${label}</span></td>
                     <td class="money-val" style="text-align:right">${prize}</td>
@@ -762,7 +821,7 @@
             return;
         }
 
-        let csvContent = "\uFEFFNome;Escola;Nota;Nível;Prêmio\n"; // Header with BOM for UTF-8
+        let csvContent = "\uFEFFNome;Escola;Itinerário;Nota;Nível;Prêmio\n"; // Header with BOM for UTF-8
 
         currentFilteredData.forEach(s => {
             let label = '', prize = 0;
@@ -771,7 +830,7 @@
             else if(s.score >= 930) { label = 'Nível II'; prize = 2000; }
             else { label = 'Nível I'; prize = 1000; }
 
-            csvContent += `${s.name};${s.school};${s.score};${label};${prize}\n`;
+            csvContent += `${s.name};${s.school};${s.itin};${s.score};${label};${prize}\n`;
         });
 
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
