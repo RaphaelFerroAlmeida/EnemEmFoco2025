@@ -19,10 +19,11 @@
             --bg-light: #f8fafc;
             --white: #ffffff;
             
-            --lvl1: #2563eb;
-            --lvl2: #9333ea;
-            --lvl3: #db2777;
-            --lvlMax: #fbbf24;
+            /* Cores Vibrantes (Ajustadas para Destaque) */
+            --lvl1: #3b82f6; /* Azul Vibrante (900-920) */
+            --lvl2: #8b5cf6; /* Roxo Vibrante (940) */
+            --lvl3: #ec4899; /* Pink Vibrante (960-980) */
+            --lvlMax: #f59e0b; /* Dourado (1000) */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -118,40 +119,64 @@
         .page-title h2 { font-size: 28px; font-weight: 700; color: var(--text-dark); }
         .page-title p { color: var(--text-gray); margin-top: 4px; }
 
-        /* KPIS */
+        /* MODERNISED KPIS */
         .kpi-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-        .kpi-box { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border-bottom: 3px solid transparent; display: flex; flex-direction: column; justify-content: space-between; }
-        .kpi-box.primary { border-color: var(--primary); border-width: 4px; box-shadow: 0 10px 30px rgba(0, 70, 132, 0.1); }
-        .kpi-box.accent { border-color: var(--accent); }
-        .kpi-box.success { border-color: #10b981; }
+        .kpi-box { 
+            background: white; padding: 24px; border-radius: 16px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9;
+            display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .kpi-box:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
         
-        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; display: block; margin-bottom: 8px; }
-        .kpi-number { font-size: 32px; font-weight: 800; color: var(--text-dark); line-height: 1; }
-        .kpi-sub { font-size: 11px; color: var(--text-gray); margin-top: 8px; display: block; line-height: 1.4; }
-        .kpi-highlight { color: var(--primary); font-weight: 700; }
+        .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .kpi-icon-bg { 
+            width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; 
+        }
+        
+        .kpi-primary .kpi-icon-bg { background: #eff6ff; color: var(--primary); }
+        .kpi-success .kpi-icon-bg { background: #f0fdf4; color: #16a34a; }
+        .kpi-accent .kpi-icon-bg { background: #faf5ff; color: #9333ea; }
+        .kpi-warn .kpi-icon-bg { background: #fffbeb; color: #d97706; }
+
+        .kpi-label { font-size: 12px; font-weight: 700; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; }
+        .kpi-number { font-size: 36px; font-weight: 800; color: var(--text-dark); line-height: 1; margin-bottom: 5px; }
+        .kpi-sub { font-size: 13px; color: var(--text-gray); line-height: 1.4; }
+        
+        .kpi-school-name { 
+            display: block; font-size: 19px; font-weight: 800; color: var(--primary); margin-top: 5px; 
+            padding-bottom: 4px; display: inline-block; letter-spacing: -0.5px;
+        }
+        
+        .leader-badge {
+            background: #fffbeb; color: #b45309; padding: 6px 12px; border-radius: 8px; 
+            font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;
+            margin-top: 8px; border: 1px solid #fcd34d;
+        }
 
         /* KPI BREAKDOWN BADGES */
-        .kpi-tags { display: flex; gap: 8px; margin-top: 8px; }
-        .kt-tag { font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
-        .kt-iftp { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
-        .kt-ifa { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+        .kpi-tags { display: flex; gap: 8px; margin-top: 10px; }
+        .kt-tag { font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }
+        .kt-iftp { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
+        .kt-ifa { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
 
         /* CHARTS */
         .chart-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
         .chart-box { background: white; padding: 24px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-        .chart-head { margin-bottom: 20px; font-weight: 700; font-size: 15px; color: var(--text-dark); }
+        .chart-head { margin-bottom: 20px; font-weight: 700; font-size: 16px; color: var(--text-dark); }
 
         /* TABLE */
         .ranking-card, .student-table-container { background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); overflow: hidden; margin-top: 30px; }
         .ranking-header { padding: 20px 30px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
         .table-responsive { width: 100%; overflow-x: auto; }
-        .styled-table { width: 100%; border-collapse: collapse; min-width: 600px; } 
-        .styled-table th { text-align: left; padding: 16px 20px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; white-space: nowrap; }
-        .styled-table td { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+        .styled-table { width: 100%; border-collapse: collapse; min-width: 900px; } 
+        .styled-table th { text-align: left; padding: 18px 25px; font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; background: #fafafa; white-space: nowrap; }
+        .styled-table td { padding: 18px 25px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
         .styled-table tr:hover { background-color: #f8fafc; }
 
         /* BADGES */
-        .rank-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; background: #f1f5f9; color: #64748b; }
+        .rank-circle { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; background: #f1f5f9; color: #64748b; }
         .rank-1 { background: #fef3c7; color: #b45309; }
         .rank-2 { background: #e0f2fe; color: #0369a1; }
         .rank-3 { background: #ffedd5; color: #c2410c; }
@@ -159,24 +184,24 @@
         .eff-badge { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; }
         
         .quality-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-        .q-tag { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid transparent; white-space: nowrap; }
+        .q-tag { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid transparent; white-space: nowrap; }
         .qt-n3 { background: #fce7f3; color: #db2777; border-color: #fbcfe8; }
         .qt-n2 { background: #f3e8ff; color: #9333ea; border-color: #e9d5ff; }
         .qt-n1 { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 
         .itin-tags { display: flex; gap: 4px; }
-        .itin-tag { padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; color: white; display: inline-block; }
+        .itin-tag { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; color: white; display: inline-block; }
         .itin-iftp { background-color: #f97316; }
         .itin-ifa { background-color: #3b82f6; }
         
         .award-breakdown { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-        .ab-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+        .ab-badge { padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
         .ab-iftp { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
         .ab-ifa { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
 
         .money-val { font-weight: 700; color: var(--primary); font-family: 'Inter', sans-serif; white-space: nowrap; }
         
-        .st-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+        .st-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
         .st-n3 { background: #fce7f3; color: #db2777; border: 1px solid #fbcfe8; }
         .st-n2 { background: #f3e8ff; color: #9333ea; border: 1px solid #e9d5ff; }
         .st-n1 { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
@@ -196,7 +221,7 @@
             .sidebar.active { left: 0; }
             
             .mobile-header { display: flex; }
-            .main-content { padding: 20px; padding-top: 80px; /* space for header */ }
+            .main-content { padding: 20px; padding-top: 80px; }
             
             .kpi-row { grid-template-columns: 1fr 1fr; gap: 15px; }
             .chart-grid { grid-template-columns: 1fr; }
@@ -267,56 +292,74 @@
             <div class="insight-section">
                 <div class="insight-card">
                     <h4><i class="fa-solid fa-trophy"></i> Liderança Disputada</h4>
-                    <p><strong>Sesi Canaã</strong> e <strong>Sesi Campinas</strong> são os polos de excelência, compartilhando a liderança em investimento e abrigando os únicos alunos <strong>Nível III (>950)</strong>.</p>
+                    <p><strong>Sesi Canaã</strong> e <strong>Sesi Campinas</strong> são os polos de excelência, compartilhando a liderança em investimento e abrigando os únicos alunos <strong>960+ pontos</strong>.</p>
                 </div>
                 <div class="insight-card" style="border-left-color: #9333ea;">
                     <h4><i class="fa-solid fa-chart-line"></i> Eficiência Oculta</h4>
-                    <p>O <strong>Sesi Catalão</strong> se destaca pela qualidade proporcional: com apenas 3 alunos, 66% atingiram o Nível II, indicando um forte trabalho pedagógico focado.</p>
-                </div>
-                <div class="insight-card" style="border-left-color: #10b981;">
-                    <h4><i class="fa-solid fa-layer-group"></i> Base da Pirâmide</h4>
-                    <p>Temos uma base sólida de <strong>32 alunos</strong> no Nível I. A estratégia para 2026 deve ser migrar este grupo para o Nível II, elevando a percepção de qualidade.</p>
+                    <p>O <strong>Sesi Planalto</strong> disparou em eficiência com 18% de seus inscritos premiados, seguido de perto por Canaã (16%).</p>
                 </div>
             </div>
         </aside>
 
         <!-- Content -->
         <main class="main-content">
-            <div class="header-bar">
-                <div class="page-title">
-                    <h2>Painel Executivo Estratégico</h2>
-                    <p>Consolidado de Performance e Eficiência - Rede SESI Goiás</p>
-                </div>
-                <button class="btn" style="background:var(--white); padding:10px 20px; border-radius:20px; font-weight:600; border:1px solid #e2e8f0; color:var(--text-dark)">
-                    <i class="fa-regular fa-calendar"></i> Ano Letivo 2025
-                </button>
-            </div>
+            <!-- HEADER REMOVED AS REQUESTED -->
 
-            <!-- KPIs Estatísticos -->
+            <!-- KPIs Estatísticos Modernizados -->
             <div class="kpi-row">
-                <div class="kpi-box primary">
-                    <span class="kpi-label">Alunos Premiados</span>
-                    <span class="kpi-number" id="exec-total-students" style="font-size: 42px;">0</span>
-                    <!-- Breakdown directly in box -->
-                    <div class="kpi-tags" id="exec-kpi-breakdown">
-                        <!-- JS Insert -->
+                <!-- KPI 1: Alunos Premiados -->
+                <div class="kpi-box kpi-primary">
+                    <div class="kpi-header">
+                        <span class="kpi-label">ALUNOS PREMIADOS</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-user-graduate"></i></div>
                     </div>
-                    <span class="kpi-sub" style="margin-top: 15px;"><i class="fa-solid fa-check-circle" style="color:var(--primary)"></i> Base: 857 Matriculados</span>
+                    <div>
+                        <span class="kpi-number" id="exec-total-students" style="font-size: 42px;">0</span>
+                        <!-- Breakdown directly in box -->
+                        <div class="kpi-tags" id="exec-kpi-breakdown">
+                            <!-- JS Insert -->
+                        </div>
+                        <span class="kpi-sub" style="margin-top: 15px; display:block;"><i class="fa-solid fa-clipboard-list" style="color:var(--primary)"></i> <strong>486 Inscritos</strong> no ENEM</span>
+                        <div id="leader-mention"></div>
+                    </div>
                 </div>
-                <div class="kpi-box success">
-                    <span class="kpi-label">Unidade + Eficiente</span>
-                    <span class="kpi-number" id="exec-best-eff-val" style="font-size: 32px;">0%</span>
-                    <span class="kpi-sub">Taxa de Conversão<br><span id="exec-best-eff-name" class="kpi-highlight" style="font-size: 14px;">Escola</span></span>
+
+                <!-- KPI 2: Eficiência -->
+                <div class="kpi-box kpi-success">
+                    <div class="kpi-header">
+                        <span class="kpi-label">MAIS EFICIENTE</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-chart-line"></i></div>
+                    </div>
+                    <div>
+                        <span class="kpi-number" id="exec-best-eff-val">0%</span>
+                        <span class="kpi-school-name" id="exec-best-eff-name">Escola</span>
+                        <span class="kpi-sub">Taxa de Conversão (Premiados/Inscritos)</span>
+                    </div>
                 </div>
-                <div class="kpi-box accent">
-                    <span class="kpi-label">Melhor Qualidade</span>
-                    <span class="kpi-number" id="exec-best-avg-val" style="font-size: 32px;">0</span>
-                    <span class="kpi-sub">Média dos Premiados<br><span id="exec-best-avg-name" class="kpi-highlight" style="font-size: 14px;">Escola</span></span>
+
+                <!-- KPI 3: Qualidade -->
+                <div class="kpi-box kpi-accent">
+                    <div class="kpi-header">
+                        <span class="kpi-label">MELHOR QUALIDADE</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-star"></i></div>
+                    </div>
+                    <div>
+                        <span class="kpi-number" id="exec-best-avg-val">0</span>
+                        <span class="kpi-school-name" id="exec-best-avg-name">Escola</span>
+                        <span class="kpi-sub">Média dos Premiados</span>
+                    </div>
                 </div>
-                <div class="kpi-box">
-                    <span class="kpi-label">Premiação Total</span>
-                    <span class="kpi-number" id="exec-total-budget" style="font-size: 32px;">R$ 0k</span>
-                    <span class="kpi-sub">Executado em Prêmios<br>Rede Consolidada</span>
+
+                <!-- KPI 4: Premiação Total -->
+                <div class="kpi-box kpi-warn">
+                    <div class="kpi-header">
+                        <span class="kpi-label">PREMIAÇÃO TOTAL</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-money-bill-wave"></i></div>
+                    </div>
+                    <div>
+                        <span class="kpi-number" id="exec-total-budget">R$ 0k</span>
+                        <span class="kpi-sub" style="margin-top:10px; display:block;">Valor total distribuído aos alunos</span>
+                    </div>
                 </div>
             </div>
 
@@ -330,19 +373,11 @@
                     </div>
                 </div>
                 
-                <!-- Doughnut Chart: Funnel -->
-                <div class="chart-box" style="display:flex; flex-direction:column; align-items:center;">
-                    <div class="chart-head" style="align-self:flex-start; width:100%;">Funil de Qualidade</div>
-                    <div style="width:220px; height:220px; position:relative;">
-                        <canvas id="qualityDoughnut"></canvas>
-                        <!-- Center Text -->
-                        <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;">
-                            <span id="chart-total-center" style="font-size:24px; font-weight:800; color:var(--text-dark); display:block;">0</span>
-                            <span style="font-size:12px; color:var(--text-gray);">Alunos</span>
-                        </div>
-                    </div>
-                    <div style="margin-top:20px; width:100%;" id="funnel-legend">
-                        <!-- JS Insert -->
+                <!-- Bar Chart: Distribution -->
+                <div class="chart-box" style="display:flex; flex-direction:column;">
+                    <div class="chart-head" style="align-self:flex-start; width:100%;">Distribuição de Pontuação</div>
+                    <div style="position:relative; height:300px; width:100%;">
+                        <canvas id="qualityChart"></canvas>
                     </div>
                 </div>
             </div>
@@ -361,10 +396,11 @@
                                 <th width="20%">Unidade Escolar</th>
                                 <th width="10%">Itinerários</th>
                                 <th>Matriculados</th>
+                                <th>Inscritos</th>
                                 <th>Premiados</th>
                                 <th>Eficiência (%)</th>
-                                <th width="20%">Qualidade (Níveis)</th>
-                                <th width="15%" style="text-align:right">Investimento</th>
+                                <th width="20%">Pontuação (Qtd)</th>
+                                <th width="15%" style="text-align:right">Premiação</th>
                             </tr>
                         </thead>
                         <tbody id="rankingTableBody">
@@ -404,30 +440,42 @@
                     
                     <select id="levelFilter" class="filter-select" onchange="renderDetailedView()">
                         <option value="all">Todos os Níveis</option>
-                        <option value="max">Proficiência Máxima (1000)</option>
-                        <option value="n3">Nível III (950-999)</option>
-                        <option value="n2">Nível II (930-949)</option>
-                        <option value="n1">Nível I (900-929)</option>
+                        <option value="max">Máxima (1000 pts)</option>
+                        <option value="n3">Nível 3 (960-980 pts)</option>
+                        <option value="n2">Nível 2 (940 pts)</option>
+                        <option value="n1">Nível 1 (900-920 pts)</option>
                     </select>
                 </div>
             </div>
 
             <!-- Detailed KPIs -->
             <div class="kpi-row">
-                <div class="kpi-box primary">
-                    <span class="kpi-label">Alunos Premiados</span>
+                <div class="kpi-box kpi-primary">
+                    <div class="kpi-header">
+                        <span class="kpi-label">ALUNOS PREMIADOS</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-users"></i></div>
+                    </div>
                     <span class="kpi-number" id="det-count">0</span>
                 </div>
-                <div class="kpi-box accent">
-                    <span class="kpi-label">Premiação Total</span>
+                <div class="kpi-box kpi-warn">
+                    <div class="kpi-header">
+                        <span class="kpi-label">PREMIAÇÃO TOTAL</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
                     <span class="kpi-number" id="det-budget">R$ 0</span>
                 </div>
-                <div class="kpi-box">
-                    <span class="kpi-label">Maior Nota</span>
+                <div class="kpi-box kpi-accent">
+                    <div class="kpi-header">
+                        <span class="kpi-label">MAIOR NOTA</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-trophy"></i></div>
+                    </div>
                     <span class="kpi-number" id="det-max-score" style="color:var(--lvl3)">0</span>
                 </div>
-                <div class="kpi-box">
-                    <span class="kpi-label">Nota Média</span>
+                <div class="kpi-box kpi-success">
+                    <div class="kpi-header">
+                        <span class="kpi-label">NOTA MÉDIA</span>
+                        <div class="kpi-icon-bg"><i class="fa-solid fa-calculator"></i></div>
+                    </div>
                     <span class="kpi-number" id="det-avg">0</span>
                 </div>
             </div>
@@ -466,8 +514,6 @@
     function toggleSidebar() {
         const sidebar = document.querySelector('.sidebar');
         const overlay = document.querySelector('.overlay');
-        
-        // Handle for both active views if present
         const activeView = document.querySelector('.app-layout:not(.hidden) .sidebar');
         if(activeView) {
             activeView.classList.toggle('active');
@@ -476,24 +522,25 @@
     }
 
     // === DATA SOURCE ===
-    // Aggregated School Data with Itinerary
+    // Updated with correct "Inscritos" numbers totaling 486 + Matriculados 857
     const schools = [
-        { name: "Sesi Canaã", enrolled: 109, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Campinas", enrolled: 160, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Planalto", enrolled: 82, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Jundiaí", enrolled: 67, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Colorado", enrolled: 102, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Catalão", enrolled: 75, itineraries: ['IFTP'] },
-        { name: "Sesi Itumbiara", enrolled: 24, itineraries: ['IFTP'] },
-        { name: "Sesi Jaiara", enrolled: 36, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Rio Verde", enrolled: 59, itineraries: ['IFTP', 'IFA'] },
-        { name: "Sesi Aparecida", enrolled: 69, itineraries: ['IFTP'] },
-        { name: "Sesi Celso Charuri", enrolled: 29, itineraries: ['IFTP'] },
-        { name: "Sesi Crixás", enrolled: 27, itineraries: ['IFTP'] },
-        { name: "Sesi Niquelândia", enrolled: 18, itineraries: ['IFTP'] }
+        { name: "Sesi Canaã", matriculados: 109, inscritos: 74, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Campinas", matriculados: 160, inscritos: 100, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Planalto", matriculados: 82, inscritos: 50, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Jundiaí", matriculados: 67, inscritos: 34, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Colorado", matriculados: 102, inscritos: 44, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Catalão", matriculados: 75, inscritos: 34, itineraries: ['IFTP'] },
+        { name: "Sesi Itumbiara", matriculados: 24, inscritos: 15, itineraries: ['IFTP'] },
+        { name: "Sesi Jaiara", matriculados: 36, inscritos: 27, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Rio Verde", matriculados: 59, inscritos: 20, itineraries: ['IFTP', 'IFA'] },
+        { name: "Sesi Aparecida", matriculados: 69, inscritos: 44, itineraries: ['IFTP'] },
+        { name: "Sesi Celso Charuri", matriculados: 29, inscritos: 13, itineraries: ['IFTP'] },
+        { name: "Sesi Crixás", matriculados: 27, inscritos: 24, itineraries: ['IFTP'] },
+        { name: "Sesi Niquelândia", matriculados: 18, inscritos: 7, itineraries: ['IFTP'] }
     ];
 
-    // Detailed Student List with Mapped Itinerary from PDF attachment
+    // Detailed Student List with Mapped Itinerary (Added Samuel)
+    // All 47 Students mapped to IFTP or IFA based on PDF
     const studentsDB = [
         // Canaã (12)
         { name: "Vitorya Luiza Vieira Carvalho", school: "Sesi Canaã", score: 960, itin: "IFTP" },
@@ -519,7 +566,7 @@
         { name: "Vitor Gabriel Alves Nunes", school: "Sesi Campinas", score: 920, itin: "IFA" },
         { name: "Catarina Iskandar Mesquita", school: "Sesi Campinas", score: 900, itin: "IFTP" },
         { name: "Matheus Henrique Rosa Da Silva", school: "Sesi Campinas", score: 900, itin: "IFTP" },
-        // Planalto (9)
+        // Planalto (9) - Added Samuel
         { name: "Samuel Pereira dos Santos", school: "Sesi Planalto", score: 940, itin: "IFA" },
         { name: "Anna Luyza Rodrigues Silva", school: "Sesi Planalto", score: 940, itin: "IFA" },
         { name: "Juan Alves de Jesus Araujo", school: "Sesi Planalto", score: 940, itin: "IFA" },
@@ -551,12 +598,12 @@
         { name: "Maria Eduarda C. Pamplona", school: "Sesi Jaiara", score: 900, itin: "IFTP" }
     ];
 
-    // Helper to get Level ID from Score
+    // Helper to get Level ID from Score (UPDATED LOGIC)
     function getLevelId(score) {
         if (score === 1000) return 'max';
-        if (score >= 950) return 'n3';
-        if (score >= 930) return 'n2';
-        if (score >= 900) return 'n1';
+        if (score >= 960) return 'n3'; // 960, 980
+        if (score === 940) return 'n2';
+        if (score >= 900 && score <= 920) return 'n1';
         return 'none';
     }
 
@@ -569,23 +616,24 @@
             let ifaCount = 0;
             let studentCount = 0;
 
-            // Find all students for this school from DB
             const schoolStudents = studentsDB.filter(st => st.school === s.name);
             
             schoolStudents.forEach(st => {
                 sumScores += st.score;
                 studentCount++;
+                // New Level Logic
                 if(st.score === 1000) mx++;
-                else if(st.score >= 950) l3++;
-                else if(st.score >= 930) l2++;
-                else if(st.score >= 900) l1++;
+                else if(st.score >= 960) l3++;
+                else if(st.score === 940) l2++;
+                else if(st.score >= 900 && st.score <= 920) l1++;
 
                 if(st.itin === 'IFTP') iftpCount++;
                 if(st.itin === 'IFA') ifaCount++;
             });
 
             const budget = (l1*1000) + (l2*2000) + (l3*3000) + (mx*10000);
-            const efficiency = s.enrolled > 0 ? ((studentCount / s.enrolled) * 100).toFixed(1) : 0;
+            // EFFICIENCY CALCULATION BASED ON INSCRITOS
+            const efficiency = s.inscritos > 0 ? ((studentCount / s.inscritos) * 100).toFixed(1) : 0;
             const avgScore = studentCount > 0 ? (sumScores / studentCount).toFixed(1) : 0;
             
             return { 
@@ -608,7 +656,6 @@
         
         document.getElementById(`view-${viewName}`).classList.remove('hidden');
         
-        // Close sidebar on mobile when switching
         document.querySelectorAll('.sidebar').forEach(el => el.classList.remove('active'));
         document.querySelector('.overlay').classList.remove('active');
         
@@ -624,6 +671,7 @@
         // 1. Populate KPI
         const totalBudget = processedSchools.reduce((a,b) => a + b.budget, 0);
         const totalStudents = processedSchools.reduce((a,b) => a + b.students, 0);
+        const totalInscritos = processedSchools.reduce((a,b) => a + b.inscritos, 0);
         const totalIFTP = processedSchools.reduce((a,b) => a + b.iftpCount, 0);
         const totalIFA = processedSchools.reduce((a,b) => a + b.ifaCount, 0);
         
@@ -632,9 +680,14 @@
         processedSchools.forEach(s => {
             if(parseFloat(s.efficiency) > topEfficiencyVal) topEfficiencyVal = parseFloat(s.efficiency);
         });
-        // Find all schools matching top efficiency
         const topEffSchools = processedSchools.filter(s => parseFloat(s.efficiency) === topEfficiencyVal);
         const topEffNames = topEffSchools.map(s => s.name.replace('Sesi ', '')).join(' e ');
+        
+        // Logic for Volume Leader
+        let maxAwardsVal = -1;
+        processedSchools.forEach(s => { if(s.students > maxAwardsVal) maxAwardsVal = s.students; });
+        const leaderSchools = processedSchools.filter(s => s.students === maxAwardsVal);
+        const leaderNames = leaderSchools.map(s => s.name.replace('Sesi ', '')).join(' e ');
 
         let bestAvg = processedSchools[0];
         processedSchools.forEach(s => { 
@@ -644,14 +697,16 @@
         document.getElementById('exec-total-budget').innerText = 'R$ ' + (totalBudget/1000).toFixed(0) + 'k';
         document.getElementById('exec-total-students').innerText = totalStudents;
         
-        // KPI Breakdown for Total Students
         const kpiBreakdownHTML = `
             <div class="kt-tag kt-iftp"><i class="fa-solid fa-cogs"></i> ${totalIFTP} IFTP</div>
             <div class="kt-tag kt-ifa"><i class="fa-solid fa-book-open"></i> ${totalIFA} IFA</div>
         `;
         document.getElementById('exec-kpi-breakdown').innerHTML = kpiBreakdownHTML;
 
-        // Efficiency KPI
+        // Add Leader Mention
+        const leaderMentionHTML = `<span class="leader-badge"><i class="fa-solid fa-crown"></i> Líder: ${leaderNames}</span>`;
+        document.getElementById('leader-mention').innerHTML = leaderMentionHTML;
+
         document.getElementById('exec-best-eff-val').innerText = topEfficiencyVal + '%';
         document.getElementById('exec-best-eff-name').innerText = topEffNames;
         
@@ -664,14 +719,13 @@
         processedSchools.forEach((s, i) => {
             let rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
             let qualTags = '<div class="quality-tags">';
-            if(s.mx > 0) qualTags += `<span class="q-tag" style="background:#fefce8; color:#ca8a04; border-color:#fde047">${s.mx}x MAX</span>`;
-            if(s.l3 > 0) qualTags += `<span class="q-tag qt-n3">${s.l3}x N3</span>`;
-            if(s.l2 > 0) qualTags += `<span class="q-tag qt-n2">${s.l2}x N2</span>`;
-            if(s.l1 > 0) qualTags += `<span class="q-tag qt-n1">${s.l1}x N1</span>`;
+            if(s.mx > 0) qualTags += `<span class="q-tag" style="background:#fefce8; color:#f59e0b; border-color:#fbbf24">${s.mx}x 1000 pts</span>`;
+            if(s.l3 > 0) qualTags += `<span class="q-tag qt-n3">${s.l3}x 960/980 pts</span>`;
+            if(s.l2 > 0) qualTags += `<span class="q-tag qt-n2">${s.l2}x 940 pts</span>`;
+            if(s.l1 > 0) qualTags += `<span class="q-tag qt-n1">${s.l1}x 900/920 pts</span>`;
             if(s.students === 0) qualTags += `<span class="q-tag" style="color:#cbd5e1">-</span>`;
             qualTags += '</div>';
 
-            // Itinerary Availability Badges
             let itinHtml = '<div class="itin-tags">-</div>';
             if(s.itineraries && s.itineraries.length > 0) {
                 itinHtml = '<div class="itin-tags">';
@@ -682,22 +736,14 @@
                 itinHtml += '</div>';
             }
 
-            // Award Breakdown Badges
-            let awardsBreakdownHtml = `<div style="font-weight:700; font-size:16px;">${s.students}</div>`;
-            if(s.students > 0) {
-                awardsBreakdownHtml += `<div class="award-breakdown">`;
-                if(s.iftpCount > 0) awardsBreakdownHtml += `<span class="ab-badge ab-iftp">${s.iftpCount} IFTP</span>`;
-                if(s.ifaCount > 0) awardsBreakdownHtml += `<span class="ab-badge ab-ifa">${s.ifaCount} IFA</span>`;
-                awardsBreakdownHtml += `</div>`;
-            }
-
             const row = `
                 <tr>
                     <td><div class="rank-circle ${rankClass}">${i+1}</div></td>
                     <td style="font-weight:600;">${s.name}</td>
                     <td>${itinHtml}</td>
-                    <td>${s.enrolled}</td>
-                    <td>${awardsBreakdownHtml}</td>
+                    <td>${s.matriculados}</td>
+                    <td>${s.inscritos}</td>
+                    <td style="font-weight:700;">${s.students}</td>
                     <td><span class="eff-badge" style="${s.students===0 ? 'background:#f1f5f9; color:#94a3b8; border-color:#e2e8f0' : ''}">${s.efficiency}%</span></td>
                     <td>${qualTags}</td>
                     <td class="money-val" style="text-align:right">R$ ${s.budget.toLocaleString('pt-BR')}</td>
@@ -753,50 +799,31 @@
         const totL3 = processedSchools.reduce((a,b)=>a+b.l3,0);
         const totMx = processedSchools.reduce((a,b)=>a+b.mx,0);
         
-        const legendHTML = `
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
-                <span><i class="fa-solid fa-circle" style="color:var(--lvlMax)"></i> Máxima</span>
-                <strong>${totMx}</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
-                <span><i class="fa-solid fa-circle" style="color:var(--lvl3)"></i> Nível III</span>
-                <strong>${totL3}</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray); margin-bottom:5px;">
-                <span><i class="fa-solid fa-circle" style="color:var(--lvl2)"></i> Nível II</span>
-                <strong>${totL2}</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-gray);">
-                <span><i class="fa-solid fa-circle" style="color:var(--lvl1)"></i> Nível I</span>
-                <strong>${totL1}</strong>
-            </div>
-        `;
-        document.getElementById('funnel-legend').innerHTML = legendHTML;
-        document.getElementById('chart-total-center').innerText = totalStudents;
-        
-        const ctxQual = document.getElementById('qualityDoughnut').getContext('2d');
+        const ctxQual = document.getElementById('qualityChart').getContext('2d');
         qualChartInstance = new Chart(ctxQual, {
-            type: 'doughnut',
+            type: 'bar',
             data: {
-                labels: ['Máxima', 'Nível III', 'Nível II', 'Nível I'],
+                labels: ['900-920 pts (Nível 1)', '940 pts (Nível 2)', '960-980 pts (Nível 3)'],
                 datasets: [{
-                    data: [totMx, totL3, totL2, totL1],
-                    backgroundColor: ['#fbbf24', '#db2777', '#9333ea', '#2563eb'],
-                    borderWidth: 0,
-                    hoverOffset: 10
+                    label: 'Quantidade de Alunos',
+                    data: [totL1, totL2, totL3],
+                    backgroundColor: ['#3b82f6', '#8b5cf6', '#ec4899'],
+                    borderRadius: 4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                cutout: '80%',
-                plugins: { legend: { display: false } }
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 5 } }
+                }
             }
         });
     }
 
     // === RENDER DETAILED ===
-    let currentFilteredData = []; // Store for export
+    let currentFilteredData = []; 
 
     function initDetailed() {
         const select = document.getElementById('schoolFilter');
@@ -818,14 +845,12 @@
         const selectedSchool = document.getElementById('schoolFilter').value;
         const selectedLevel = document.getElementById('levelFilter').value;
         
-        // Filter & Sort Logic (Highest Score First)
         currentFilteredData = studentsDB.filter(s => {
             const matchSchool = selectedSchool === 'all' || s.school === selectedSchool;
             const matchLevel = selectedLevel === 'all' || getLevelId(s.score) === selectedLevel;
             return matchSchool && matchLevel;
         }).sort((a, b) => b.score - a.score);
 
-        // Calc metrics
         const total = currentFilteredData.length;
         let sumScore = 0;
         let budget = 0;
@@ -835,14 +860,13 @@
             sumScore += s.score;
             if(s.score > maxScore) maxScore = s.score;
             if(s.score === 1000) budget += 10000;
-            else if(s.score >= 950) budget += 3000;
-            else if(s.score >= 930) budget += 2000;
-            else if(s.score >= 900) budget += 1000;
+            else if(s.score >= 960) budget += 3000;
+            else if(s.score === 940) budget += 2000;
+            else if(s.score >= 900 && s.score <= 920) budget += 1000;
         });
 
         const avg = total > 0 ? (sumScore / total).toFixed(1) : 0;
 
-        // Update DOM
         document.getElementById('det-count').innerText = total;
         document.getElementById('det-budget').innerText = 'R$ ' + budget.toLocaleString('pt-BR');
         document.getElementById('det-max-score').innerText = maxScore;
@@ -858,12 +882,11 @@
 
         currentFilteredData.forEach(s => {
             let label = '', badgeClass = '', prize = '';
-            if(s.score === 1000) { label = 'Proficiência Máxima'; badgeClass = 'st-max'; prize = 'R$ 10.000'; }
-            else if(s.score >= 950) { label = 'Nível III (Ouro)'; badgeClass = 'st-n3'; prize = 'R$ 3.000'; }
-            else if(s.score >= 930) { label = 'Nível II (Prata)'; badgeClass = 'st-n2'; prize = 'R$ 2.000'; }
-            else { label = 'Nível I (Bronze)'; badgeClass = 'st-n1'; prize = 'R$ 1.000'; }
+            if(s.score === 1000) { label = 'Máxima (1000 pts)'; badgeClass = 'st-max'; prize = 'R$ 10.000'; }
+            else if(s.score >= 960) { label = 'Nível 3 (960-980 pts)'; badgeClass = 'st-n3'; prize = 'R$ 3.000'; }
+            else if(s.score === 940) { label = 'Nível 2 (940 pts)'; badgeClass = 'st-n2'; prize = 'R$ 2.000'; }
+            else { label = 'Nível 1 (900-920 pts)'; badgeClass = 'st-n1'; prize = 'R$ 1.000'; }
 
-            // Student Itinerary Badge
             let itinHtml = '<span class="itin-tag" style="background:#cbd5e1">-</span>';
             if(s.itin === 'IFTP') itinHtml = '<span class="itin-tag itin-iftp">IFTP</span>';
             if(s.itin === 'IFA') itinHtml = '<span class="itin-tag itin-ifa">IFA</span>';
@@ -882,21 +905,20 @@
         });
     }
 
-    // === EXCEL EXPORT ===
     function downloadCSV() {
         if(currentFilteredData.length === 0) {
             alert("Não há dados para exportar.");
             return;
         }
 
-        let csvContent = "\uFEFFNome;Escola;Itinerário;Nota;Nível;Prêmio\n"; // Header with BOM for UTF-8
+        let csvContent = "\uFEFFNome;Escola;Itinerário;Nota;Nível;Prêmio\n";
 
         currentFilteredData.forEach(s => {
             let label = '', prize = 0;
             if(s.score === 1000) { label = 'Proficiência Máxima'; prize = 10000; }
-            else if(s.score >= 950) { label = 'Nível III'; prize = 3000; }
-            else if(s.score >= 930) { label = 'Nível II'; prize = 2000; }
-            else { label = 'Nível I'; prize = 1000; }
+            else if(s.score >= 960) { label = 'Nível 3'; prize = 3000; }
+            else if(s.score === 940) { label = 'Nível 2'; prize = 2000; }
+            else { label = 'Nível 1'; prize = 1000; }
 
             csvContent += `${s.name};${s.school};${s.itin};${s.score};${label};${prize}\n`;
         });
